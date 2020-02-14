@@ -110,7 +110,7 @@ function App() {
         <TotalSize>Total size: {size}</TotalSize>
       </Stats>
       <Documents>
-        { documents.map(doc => <Document key={doc.name + doc.size} doc={doc} />) }
+        { documents.map(doc => <Document key={doc.id} doc={doc} />) }
       </Documents>
       <HiddenInput
         ref={fileInput}

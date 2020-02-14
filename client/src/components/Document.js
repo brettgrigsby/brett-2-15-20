@@ -5,7 +5,7 @@ const DocumentContainer = styled.div`
   width: 100%;
   border: 1px solid #000000;
   padding: 25px 30px 20px 30px;
-  margin: 10px 0;
+  margin: 15px 0;
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
@@ -38,13 +38,23 @@ const DeleteButton = styled.button`
 `
 
 function Document({ doc }) {
+  const handleDelete = async () => {
+    try {
+      const url = `http://localhost:5000/documents/${doc.id}`
+      const response = await fetch(url, { method: 'DELETE' })
+      console.log({ response })
+    } catch(err) {
+      console.log('Error trying to delete: ', err)
+    }
+  }
+
   return(
     <DocumentContainer>
       <Description>
         <span className="doc-name">{doc.name}</span>
         <span className="doc-size">{doc.size}</span>
       </Description>
-      <DeleteButton>delete</DeleteButton>
+      <DeleteButton onClick={handleDelete}>delete</DeleteButton>
     </DocumentContainer>
   )
 }
