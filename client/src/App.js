@@ -32,16 +32,19 @@ function App() {
   const [documents, setDocuments] = useState([])
   const [searchText, setSearchText] = useState('')
 
-  useEffect(() => {
-    async function fetchDocuments() {
-      try {
-        const response = await fetch('http://localhost:5000/documents')
-        const docs = await response.json()
-        setDocuments(docs)
-      } catch (err) {
-        console.log('failed to fetch documents')
-      }
+  const fetchDocuments = async () => {
+    try {
+      let url = 'http://localhost:5000/documents'
+      if (searchText) url = url + '?searchText=' + searchText
+      const response = await fetch(url)
+      const docs = await response.json()
+      setDocuments(docs)
+    } catch (err) {
+      console.log('failed to fetch documents')
     }
+  }
+
+  useEffect(() => {
     fetchDocuments()
   }, [searchText])
 
