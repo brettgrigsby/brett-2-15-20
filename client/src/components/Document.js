@@ -5,7 +5,7 @@ const DocumentContainer = styled.div`
   width: 100%;
   border: 1px solid #000000;
   padding: 15px 30px;
-  margin: 5px 0;
+  margin: 10px 0;
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;

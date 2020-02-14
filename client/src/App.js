@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import SearchBar from './components/SearchBar'
 import Document from './components/Document'
@@ -26,19 +26,28 @@ const TotalSize = styled.div`
   font-size: 24px;
 `
 
-const documents = [
+const docs = [
   { name: 'Doc1', size: 300000 },
   { name: 'Doc2', size: 400000 },
   { name: 'Doc3', size: 200000 },
 ]
 
 function App() {
+
+  const [documents, setDocuments] = useState([])
+  const [searchText, setSearchText] = useState('')
+
+  useEffect(() => {
+    console.log('triggered effect')
+    setDocuments(docs)
+  }, [searchText])
+
   const size = documents.reduce((acc, doc) => (acc + doc.size), 0)
 
   return (
     <AppContainer>
       <UploadButton>UPLOAD</UploadButton>
-      <SearchBar />
+      <SearchBar value={searchText} setValue={setSearchText} />
       <DocumentCount>{documents.length} documents</DocumentCount>
       <TotalSize>Total size: {size}</TotalSize>
       { documents.map(doc => <Document key={doc.name + doc.size} doc={doc} />) }

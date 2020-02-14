@@ -10,9 +10,18 @@ const StyledInput = styled.input`
   margin-top: 10px;
 `
 
-function SearchBar() {
+function SearchBar({ value, setValue }) {
+  const onChange = (e) => {
+    setValue(e.target.value)
+  }
+
   return(
-    <StyledInput type="text" placeholder="Search documents..." />
+    <StyledInput
+      type="text"
+      placeholder="Search documents..."
+      value={value}
+      onChange={onChange}
+    />
   )
 }
 
