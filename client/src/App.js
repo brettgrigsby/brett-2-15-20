@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import SearchBar from './components/SearchBar'
 import Document from './components/Document'
@@ -16,47 +16,108 @@ const UploadButton = styled.button`
   font-size: 28px;
   width: 100%;
   padding: 10px;
+  cursor: pointer;
+  @media only screen and (min-device-width: 500px) {
+    width: 200px;
+  }
 `
 
 const DocumentCount = styled.div`
   font-size: 48px;
   margin: 10px 0;
+  @media only screen and (min-device-width: 500px) {
+    margin: 0;
+  }
 `
 
 const TotalSize = styled.div`
   font-size: 24px;
+  @media only screen and (min-device-width: 500px) {
+    margin-bottom: 6px;
+  }
+`
+
+const ActionBar = styled.div`
+  @media only screen and (min-device-width: 500px) {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    margin-bottom: 50px;
+  }
+`
+
+const Stats = styled.div`
+  @media only screen and (min-device-width: 500px) {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+`
+
+const Documents = styled.div`
+  @media only screen and (min-device-width: 500px) {
+    display: inline-grid;
+    grid-column-gap: 30px;
+    grid-template-columns: auto auto auto;
+  }
+`
+
+const HiddenInput = styled.input`
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
 `
 
 function App() {
-
+  const fileInput = useRef(null)
   const [documents, setDocuments] = useState([])
   const [searchText, setSearchText] = useState('')
 
-  const fetchDocuments = async () => {
-    try {
-      let url = 'http://localhost:5000/documents'
-      if (searchText) url = url + '?searchText=' + searchText
-      const response = await fetch(url)
-      const docs = await response.json()
-      setDocuments(docs)
-    } catch (err) {
-      console.log('failed to fetch documents')
-    }
-  }
-
   useEffect(() => {
+    async function fetchDocuments() {
+      try {
+        let url = 'http://localhost:5000/documents'
+        if (searchText) url = url + '?searchText=' + searchText
+        const response = await fetch(url)
+        const docs = await response.json()
+        setDocuments(docs)
+      } catch (err) {
+        console.log('failed to fetch documents')
+      }
+    }
     fetchDocuments()
   }, [searchText])
+
+  const triggerUpload = () => {
+    fileInput.current.click()
+  }
+
+  const handleUploadFile = (e) => {
+    console.log('gots a file')
+    console.log(e.currentTarget.files)
+  }
 
   const size = documents.reduce((acc, doc) => (acc + doc.size), 0)
 
   return (
     <AppContainer>
-      <UploadButton>UPLOAD</UploadButton>
-      <SearchBar value={searchText} setValue={setSearchText} />
-      <DocumentCount>{documents.length} documents</DocumentCount>
-      <TotalSize>Total size: {size}</TotalSize>
-      { documents.map(doc => <Document key={doc.name + doc.size} doc={doc} />) }
+      <ActionBar>
+        <UploadButton onClick={triggerUpload}>UPLOAD</UploadButton>
+        <SearchBar value={searchText} setValue={setSearchText} />
+      </ActionBar>
+      <Stats>
+        <DocumentCount>{documents.length} documents</DocumentCount>
+        <TotalSize>Total size: {size}</TotalSize>
+      </Stats>
+      <Documents>
+        { documents.map(doc => <Document key={doc.name + doc.size} doc={doc} />) }
+      </Documents>
+      <HiddenInput
+        ref={fileInput}
+        type="file"
+        accept="image/png,image/jpg"
+        onChange={handleUploadFile}
+      />
     </AppContainer>
   )
 }

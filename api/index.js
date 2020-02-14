@@ -8,6 +8,7 @@ const documents = [
   { name: 'Doc2', size: 400000 },
   { name: 'Doc3', size: 200000 },
   { name: 'DocBrown', size: 121000 },
+  { name: 'Captain Picard', size: 420000 },
 ]
 
 const nameFilter = (searchText) => (doc) => doc.name.toLowerCase().includes(searchText.toLowerCase())

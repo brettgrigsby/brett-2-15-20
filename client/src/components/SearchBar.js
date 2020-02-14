@@ -8,6 +8,10 @@ const StyledInput = styled.input`
   padding: 10px;
   box-sizing: border-box;
   margin-top: 10px;
+  @media only screen and (min-device-width: 500px) {
+    width: 400px;
+    margin-top: 0;
+  }
 `
 
 function SearchBar({ value, setValue }) {

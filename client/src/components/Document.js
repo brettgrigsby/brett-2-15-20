@@ -4,19 +4,26 @@ import styled from 'styled-components'
 const DocumentContainer = styled.div`
   width: 100%;
   border: 1px solid #000000;
-  padding: 15px 30px;
+  padding: 25px 30px 20px 30px;
   margin: 10px 0;
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  @media only screen and (min-device-width: 500px) {
+    width: 300px;
+  }
 `
 
 const Description = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  height: 65px;
   .doc-name {
     font-size: 28px;
+    white-space: nowrap;
+    max-width: 130px;
   }
   .doc-size {
     font-size: 18px;
