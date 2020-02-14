@@ -7,6 +7,7 @@ const AppContainer = styled.div`
   max-width: 960px;
   margin: auto;
   padding: 20px 15px;
+  font-family: 'Roboto', sans-serif;
 `
 
 const UploadButton = styled.button`
@@ -26,20 +27,22 @@ const TotalSize = styled.div`
   font-size: 24px;
 `
 
-const docs = [
-  { name: 'Doc1', size: 300000 },
-  { name: 'Doc2', size: 400000 },
-  { name: 'Doc3', size: 200000 },
-]
-
 function App() {
 
   const [documents, setDocuments] = useState([])
   const [searchText, setSearchText] = useState('')
 
   useEffect(() => {
-    console.log('triggered effect')
-    setDocuments(docs)
+    async function fetchDocuments() {
+      try {
+        const response = await fetch('http://localhost:5000/documents')
+        const docs = await response.json()
+        setDocuments(docs)
+      } catch (err) {
+        console.log('failed to fetch documents')
+      }
+    }
+    fetchDocuments()
   }, [searchText])
 
   const size = documents.reduce((acc, doc) => (acc + doc.size), 0)
