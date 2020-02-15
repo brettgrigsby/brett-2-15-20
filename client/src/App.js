@@ -98,7 +98,7 @@ function App() {
     const formData = new FormData()
     formData.append('imageFile', files[0])
 
-    const response = await fetch('http://localhost:5000/documents', {
+    await fetch('http://localhost:5000/documents', {
       method: 'POST',
       body: formData
     })
