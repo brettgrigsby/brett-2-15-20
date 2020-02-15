@@ -1,15 +1,25 @@
 const express = require('express')
+const multer = require('multer')
 const app = express()
 const cors = require('cors')
-const port = 5000
+const fs = require('fs')
 
-const documents = [
-  { id: 1, name: 'Doc1', size: 300000 },
-  { id: 2, name: 'Doc2', size: 400000 },
-  { id: 3, name: 'Doc3', size: 200000 },
-  { id: 4, name: 'DocBrown', size: 121000 },
-  { id: 5, name: 'Captain Picard', size: 420000 },
-]
+const dir = './uploads'
+if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+}
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname + '-' + Date.now())
+  }
+})
+
+const upload = multer({ storage })
+const port = 5000
 
 const nameFilter = (searchText) => (doc) => doc.name.toLowerCase().includes(searchText.toLowerCase())
 
@@ -20,13 +30,21 @@ app.get('/', (req, res) => res.json({
 }))
 
 app.get('/documents', (req, res) => {
+  const path = './uploads/'
+  const files = fs.readdirSync(path)
+  let documents = []
+  for (let file of files) {
+    const size = fs.statSync(path + file).size
+    const [name, id] = file.split('-')
+    documents.push({ id, name, size })
+  }
   const { searchText } = req.query
   const filtered = searchText ? documents.filter(nameFilter(searchText)) : documents
   res.json(filtered)
 })
 
-app.post('/documents', (req, res) => {
-  console.log('trying to create')
+app.post('/documents', upload.single('imageFile'), (req, res) => {
+  res.json({ msg: 'success' })
 })
 
 app.delete('/documents/:id', (req, res) => {
@@ -34,4 +52,4 @@ app.delete('/documents/:id', (req, res) => {
   console.log({ params: req.params })
 })
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`API listening on port ${port}!`))

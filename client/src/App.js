@@ -72,6 +72,7 @@ function App() {
   const fileInput = useRef(null)
   const [documents, setDocuments] = useState([])
   const [searchText, setSearchText] = useState('')
+  const [uploads, setUploads] = useState(0)
 
   useEffect(() => {
     async function fetchDocuments() {
@@ -86,15 +87,23 @@ function App() {
       }
     }
     fetchDocuments()
-  }, [searchText])
+  }, [searchText, uploads])
 
   const triggerUpload = () => {
     fileInput.current.click()
   }
 
-  const handleUploadFile = (e) => {
-    console.log('gots a file')
-    console.log(e.currentTarget.files)
+  const handleUploadFile = async (e) => {
+    const { files } = e.currentTarget
+    const formData = new FormData()
+    formData.append('imageFile', files[0])
+
+    const response = await fetch('http://localhost:5000/documents', {
+      method: 'POST',
+      body: formData
+    })
+
+    setUploads(uploads + 1)
   }
 
   const size = documents.reduce((acc, doc) => (acc + doc.size), 0)
