@@ -72,7 +72,7 @@ function App() {
   const fileInput = useRef(null)
   const [documents, setDocuments] = useState([])
   const [searchText, setSearchText] = useState('')
-  const [uploads, setUploads] = useState(0)
+  const [updates, setUpdates] = useState(0)
 
   useEffect(() => {
     async function fetchDocuments() {
@@ -87,7 +87,7 @@ function App() {
       }
     }
     fetchDocuments()
-  }, [searchText, uploads])
+  }, [searchText, updates])
 
   const triggerUpload = () => {
     fileInput.current.click()
@@ -103,7 +103,7 @@ function App() {
       body: formData
     })
 
-    setUploads(uploads + 1)
+    setUpdates(updates + 1)
   }
 
   const size = documents.reduce((acc, doc) => (acc + doc.size), 0)
@@ -119,7 +119,9 @@ function App() {
         <TotalSize>Total size: {size}</TotalSize>
       </Stats>
       <Documents>
-        { documents.map(doc => <Document key={doc.id} doc={doc} />) }
+        { documents.map(doc => (
+          <Document key={doc.id} doc={doc} refetch={() => setUpdates(updates + 1)} />
+        ))}
       </Documents>
       <HiddenInput
         ref={fileInput}

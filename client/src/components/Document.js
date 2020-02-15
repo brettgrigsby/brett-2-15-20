@@ -42,12 +42,13 @@ const truncateName = (name) => {
   return name.slice(0, 19) + '...'
 }
 
-function Document({ doc }) {
+function Document({ doc, refetch }) {
   const handleDelete = async () => {
     try {
       const url = `http://localhost:5000/documents/${doc.id}`
       const response = await fetch(url, { method: 'DELETE' })
       console.log({ response })
+      refetch()
     } catch(err) {
       console.log('Error trying to delete: ', err)
     }

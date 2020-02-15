@@ -18,6 +18,7 @@ const storage = multer.diskStorage({
   }
 })
 
+const PATH = './uploads/'
 const upload = multer({ storage })
 const port = 5000
 
@@ -30,11 +31,10 @@ app.get('/', (req, res) => res.json({
 }))
 
 app.get('/documents', (req, res) => {
-  const path = './uploads/'
-  const files = fs.readdirSync(path)
+  const files = fs.readdirSync(PATH)
   let documents = []
   for (let file of files) {
-    const size = fs.statSync(path + file).size
+    const size = fs.statSync(PATH + file).size
     const [name, id] = file.split('-')
     documents.push({ id, name, size })
   }
@@ -48,8 +48,12 @@ app.post('/documents', upload.single('imageFile'), (req, res) => {
 })
 
 app.delete('/documents/:id', (req, res) => {
-  console.log('trying to delete')
   console.log({ params: req.params })
+  const { id } = req.params
+  const files = fs.readdirSync(PATH)
+  const file = files.filter(f => f.split('-')[1] === id)
+  fs.unlinkSync(PATH + file)
+  res.json({ msg: 'success' })
 })
 
 app.listen(port, () => console.log(`API listening on port ${port}!`))
