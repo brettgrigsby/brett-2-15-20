@@ -37,6 +37,11 @@ const DeleteButton = styled.button`
   font-size: 14px;
 `
 
+const truncateName = (name) => {
+  if (name.length < 20) return name
+  return name.slice(0, 19) + '...'
+}
+
 function Document({ doc }) {
   const handleDelete = async () => {
     try {
@@ -51,7 +56,7 @@ function Document({ doc }) {
   return(
     <DocumentContainer>
       <Description>
-        <span className="doc-name">{doc.name}</span>
+        <span className="doc-name">{truncateName(doc.name)}</span>
         <span className="doc-size">{doc.size}</span>
       </Description>
       <DeleteButton onClick={handleDelete}>delete</DeleteButton>
