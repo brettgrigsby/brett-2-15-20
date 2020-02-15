@@ -96,6 +96,7 @@ function App() {
 
   const handleUploadFile = async (e) => {
     const { files } = e.currentTarget
+    if (files[0].size > 10000000) return alert('File size must be < 10 MB')
     const formData = new FormData()
     formData.append('imageFile', files[0])
 

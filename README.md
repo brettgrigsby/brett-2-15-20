@@ -1,10 +1,17 @@
 # Brett - 2.15.2020
 ## Installation
-From the root directory of the repository run
 
+### API
 ```
-docker-compose up
+cd api && yarn && yarn start
 ```
+accesible at localhost:5000
+
+### Client
+```
+cd client && yarn && yarn start
+```
+accesible at localhost:3000
 
 ## Security
 // List security concerns:
