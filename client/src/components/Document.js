@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { prettySize } from '../utils'
 
 const DocumentContainer = styled.div`
   width: 100%;
@@ -38,8 +39,8 @@ const DeleteButton = styled.button`
 `
 
 const truncateName = (name) => {
-  if (name.length < 20) return name
-  return name.slice(0, 19) + '...'
+  if (name.length < 19) return name
+  return name.slice(0, 16) + '...'
 }
 
 function Document({ doc, refetch }) {
@@ -58,7 +59,7 @@ function Document({ doc, refetch }) {
     <DocumentContainer>
       <Description>
         <span className="doc-name">{truncateName(doc.name)}</span>
-        <span className="doc-size">{doc.size}</span>
+        <span className="doc-size">{prettySize(doc.size)}</span>
       </Description>
       <DeleteButton onClick={handleDelete}>delete</DeleteButton>
     </DocumentContainer>

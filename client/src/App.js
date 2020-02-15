@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import SearchBar from './components/SearchBar'
 import Document from './components/Document'
+import { prettySize } from './utils'
 
 const AppContainer = styled.div`
   max-width: 960px;
@@ -116,7 +117,7 @@ function App() {
       </ActionBar>
       <Stats>
         <DocumentCount>{documents.length} documents</DocumentCount>
-        <TotalSize>Total size: {size}</TotalSize>
+        <TotalSize>Total size: {prettySize(size)}</TotalSize>
       </Stats>
       <Documents>
         { documents.map(doc => (
