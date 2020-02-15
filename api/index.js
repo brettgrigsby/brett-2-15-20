@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
 })
 
 const PATH = './uploads/'
-const upload = multer({ storage })
+const upload = multer({ storage, limits: { fileSize: 10000000 }})
 const port = 5000
 
 const nameFilter = (searchText) => (doc) => doc.name.toLowerCase().includes(searchText.toLowerCase())

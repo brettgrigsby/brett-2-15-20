@@ -14,12 +14,11 @@ cd client && yarn && yarn start
 accesible at localhost:3000
 
 ## Security
-// List security concerns:
-// - that have been addressed
-// - that have *not* been addressed
+With more time I would implement more checks on the files being uploaded. The size is checked both client and server side, but the server isn't doing more to make sure the file in a benign image.
 
 ## Improvements
-// What could be added to the app / API?
+I would test things. I am fully capable of writing tests, but got into the implementation and ran out of time.
+Also, I would do more to ensure users aren't uploading the same file twice, as ids are just timestamps right now.
 
 ## Libraries
 
@@ -57,4 +56,4 @@ and it will return only documents whose name contains the searchText as a substr
 
 ---
 ## Other notes
-// Anything else you want to mention
+I feel like there's so much more I wanted to do. 48 hours plus my normal life as a dad does not afford much time.
